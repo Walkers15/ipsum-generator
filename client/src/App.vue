@@ -44,7 +44,7 @@ export default {
         { value: "ja", text: "Japanese" },
         { value: "zh_CN", text: "Chinese" },
       ],
-      typeSelected: "paragraphs",
+      typeSelected: 0,
       typeOptions: [
         { value: 0, text: "paragraphs" },
         { value: 1, text: "words" },
@@ -63,7 +63,8 @@ export default {
         return;
       }
       const result = await axios.get(`https://mapled.kro.kr/ipsum?language=${this.languageSelected}&type=${this.typeSelected}&count=${this.count}`);
-      console.log(result);
+      // console.log(result.data.ipsum);
+      this.text = result.data.ipsum;
     },
   },
   compatConfig: { MODE: 3 },
