@@ -26,6 +26,7 @@
     "@types/cors": "^2.8.13"
   },
   "dependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@types/node-cron": "^3.0.7",
     "axios": "^1.2.1",
     "cors": "^2.8.5",
