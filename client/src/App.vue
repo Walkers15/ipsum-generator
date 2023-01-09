@@ -5,42 +5,76 @@
     <p>No-ads Online Lorem Ipsum Generator</p>
   </div>
   <div>
-    <b-button>Button</b-button>
-    <b-button variant="danger">Button</b-button>
-    <b-button variant="success">Button</b-button>
-    <b-button variant="outline-primary">Button</b-button>
+    <b-container>
+      <b-row>
+        <b-col cols="4">
+          <b-form-select v-model="languageSelected" :options="languageOptions"></b-form-select>
+        </b-col>
+        <b-col cols="3">
+          <b-form-select v-model="typeSelected" :options="typeOptions"></b-form-select>
+        </b-col>
+        <b-col cols="3">
+          <b-form-input type="number" v-model="count" placeholder="Count"></b-form-input>
+        </b-col>
+        <b-col cols="2">
+          <b-button variant="primary" @click="makeIpsum">Ipsum!</b-button>
+        </b-col>
+      </b-row>
+      <b-card class="mt-3" header="Ipsum Result">
+        <pre class="m-0">{{ text }}</pre>
+      </b-card>
+    </b-container>
   </div>
-  <div>
-    <b-form-select v-model="selected" :options="options"></b-form-select>
-    <b-form-select v-model="selected" :options="options" size="sm" class="mt-3"></b-form-select>
-    <div class="mt-3">
-      Selected: <strong>{{ selected }}</strong>
-    </div>
-  </div>
+  <div></div>
   <div>Made By <a href="https://github.com/Walkers15">Walkers15</a> / Ipsum By <a href="https://fakerjs.dev/">Faker.js</a></div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "App",
   components: {},
   data() {
     return {
-      selected: null,
-      options: [
-        { value: null, text: "Please select an option" },
-        { value: "a", text: "This is First option" },
-        { value: "b", text: "Selected Option" },
-        { value: { C: "3PO" }, text: "This is an option with object value" },
-        { value: "d", text: "This one is disabled", disabled: true },
+      languageSelected: "en",
+      languageOptions: [
+        { value: "en", text: "English" },
+        { value: "ko", text: "Korean" },
+        { value: "ja", text: "Japanese" },
+        { value: "zh_CN", text: "Chinese" },
       ],
+      typeSelected: "paragraphs",
+      typeOptions: [
+        { value: "paragraphs", text: "paragraphs" },
+        { value: "words", text: "words" },
+        { value: "sentences", text: "sentences" },
+        { value: "lines", text: "lines" },
+      ],
+      count: 3,
+      text: "",
     };
+  },
+  methods: {
+    async makeIpsum() {
+      if (this.count <= 0) {
+        alert("count가 0 이하입니다!");
+        this.count = 3;
+        return;
+      }
+      const result = await axios.get(`https://mapled.kro.kr/ipsum?language=${this.languageSelected}&type=${this.typeSelected}&count=${this.count}`);
+      console.log(result);
+    },
   },
   compatConfig: { MODE: 3 },
 };
 </script>
 
 <style>
+@font-face {
+  font-family: "Jalnan";
+  src: url(./assets/Jalnan.ttf);
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
