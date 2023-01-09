@@ -22,6 +22,7 @@
       </b-row>
       <b-card class="mt-3" header="Ipsum Result">
         <pre class="m-0">{{ text }}</pre>
+        <b-button variant="outline-secondary" v-if="isIpsumExist" @click="copy">Copy</b-button>
       </b-card>
     </b-container>
   </div>
@@ -37,6 +38,7 @@ export default {
   components: {},
   data() {
     return {
+      isIpsumExist: false,
       languageSelected: "en",
       languageOptions: [
         { value: "en", text: "English" },
@@ -65,6 +67,11 @@ export default {
       const result = await axios.get(`https://mapled.kro.kr/ipsum?language=${this.languageSelected}&type=${this.typeSelected}&count=${this.count}`);
       // console.log(result.data.ipsum);
       this.text = result.data.ipsum;
+      this.isIpsumExist = true;
+    },
+    async copy() {
+      await navigator.clipboard.writeText(this.text);
+      alert("copy done!");
     },
   },
   compatConfig: { MODE: 3 },
